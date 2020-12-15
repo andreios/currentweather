@@ -1,19 +1,27 @@
+//Name:  Andrew Luehrs
+//Class: CIS131-W01
+//Date:  12/14/2020
+//Assn:  Final Project - Current Weather
+
+//Gets input from user, calls api, and sends data to card.
 <template>
   <div class="weather container">
     <h3>Please enter your ZIP code to retrieve today's weather</h3>
+    <!--bootstrap form objects-->
     <div class="form-row align-items-center">
+      <!--gets zip code-->
       <label for="inputZip" class="col-form-label col-auto">ZIP Code</label>
       <div class="col-auto">
         <input
           type="text"
           class="form-control"
           id="inputZip"
-          v-bind:class="{ 'is-invalid': !this.valid }"
-        />
-        <div class="invalid-feedback">
+          v-bind:class="{ 'is-invalid': !this.valid }"> <!--toggles validation display-->
+        <div class="invalid-feedback"><!--displays if invalid via bootstrap-->
           Please enter a valid 5-digit ZIP code.
         </div>
       </div>
+      <!--gets temp scale-->
       <div class="col-auto">
         <span>Temperature Scale:</span>
         <div class="form-check form-check-inline">
@@ -39,11 +47,13 @@
         </div>
       </div>
       <div class="col-auto">
+        <!-- calls routine to call api -->
         <button type="button" class="btn btn-info" v-on:click="getWeatherData">
           Submit
         </button>
       </div>
     </div>
+    <!--displays current weather using component, passing attribute values with v-bind-->
     <WeatherCard
       v-bind:weatherData="currentWeather"
       v-bind:baseURL="'http://openweathermap.org/img/wn/'"
@@ -54,9 +64,11 @@
 </template>
 
 <script>
+//import subcomponents
 import WeatherCard from "./WeatherCard.vue";
 import axios from "axios";
 
+//makes this componenet available to app.vue
 export default {
   name: "Weather",
   components: {
@@ -65,12 +77,13 @@ export default {
   props: [],
   data() {
     return {
-      currentWeather: [],
+      currentWeather: [],   //holds data returned from api
       tempScale: "",
-      valid: true,
+      valid: true,   //used for validation
     };
   },
   methods: {
+    //gets data from form
     getWeatherData() {
       var zip = document.getElementById("inputZip").value;
       var inputTempScale = "";
@@ -85,7 +98,7 @@ export default {
       }
 
       this.validateData(zip);
-
+      //calls open weather API
       if (this.valid) {
         axios
           .get(
@@ -100,6 +113,7 @@ export default {
       }
     },
     validateData(zip) {
+      //validates zip code and sets valid flag
       var zipTest = /\d{5}/;
       if (!zipTest.test(zip)) {
         this.valid = false;
