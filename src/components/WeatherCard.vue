@@ -8,7 +8,7 @@
         </div>
         <div class="col-md-8">
           <div class="card-body text-white bg-dark">
-            <h2 class="card-title">{{weatherData.main.temp}} {{tempScale}}</h2>
+            <h2 class="card-title">{{weatherData.main.temp}} {{this.tempScale}}</h2>
             <h3 class="card-title">{{weatherData.weather[0].main}}</h3>
             <p class="card-text">{{weatherData.weather[0].description}}</p>
           </div>

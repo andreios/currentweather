@@ -4,7 +4,15 @@
     <div class="form-row align-items-center">
       <label for="inputZip" class="col-form-label col-auto">ZIP Code</label>
       <div class="col-auto">
-        <input type="text" class="form-control" id="inputZip" />
+        <input
+          type="text"
+          class="form-control"
+          id="inputZip"
+          v-bind:class="{ 'is-invalid': !this.valid }"
+        />
+        <div class="invalid-feedback">
+          Please enter a valid 5-digit ZIP code.
+        </div>
       </div>
       <div class="col-auto">
         <span>Temperature Scale:</span>
@@ -58,7 +66,8 @@ export default {
   data() {
     return {
       currentWeather: [],
-      tempScale: ""
+      tempScale: "",
+      valid: true,
     };
   },
   methods: {
@@ -75,13 +84,28 @@ export default {
         inputTempScale = tempC.value;
       }
 
-      axios
-        .get(
-          "http://api.openweathermap.org/data/2.5/weather?zip=" + zip + "&appid=91d6288b232cdc7dbc9aa83fd5133e93&units=" + inputTempScale
-        )
-        .then((response) => {
-          this.currentWeather = response.data;
-        });
+      this.validateData(zip);
+
+      if (this.valid) {
+        axios
+          .get(
+            "http://api.openweathermap.org/data/2.5/weather?zip=" +
+              zip +
+              "&appid=91d6288b232cdc7dbc9aa83fd5133e93&units=" +
+              inputTempScale
+          )
+          .then((response) => {
+            this.currentWeather = response.data;
+          });
+      }
+    },
+    validateData(zip) {
+      var zipTest = /\d{5}/;
+      if (!zipTest.test(zip)) {
+        this.valid = false;
+      } else {
+        this.valid = true;
+      }
     },
   },
 };
