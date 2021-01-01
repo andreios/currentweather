@@ -101,8 +101,8 @@ export default {
       //calls open weather API
       if (this.valid) {
         axios
-          .get(
-            "http://api.openweathermap.org/data/2.5/weather?zip=" +
+          .get(     //need to change this to https to work on netlify.  DON'T do it till after it's graded!!
+            "https://api.openweathermap.org/data/2.5/weather?zip=" +
               zip +
               "&appid=91d6288b232cdc7dbc9aa83fd5133e93&units=" +
               inputTempScale
